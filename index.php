@@ -101,6 +101,7 @@
                     <div class="row">
                         <div class="col-md-12" style="text-align: center;">
                             <a target="_blank" href="http://productsdesignercanvas.com">Product Designer Canvas</a>
+                            <p><span>© Magebay 2015. All right reserved. </span></p>
                         </div>
                     </div>
                 </div>
