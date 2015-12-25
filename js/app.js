@@ -44,6 +44,23 @@ dpicalApp.service("dpiServices", [function($http, $q, $rootScope) {
                 x: 216,
                 y: 279
             }
+        ],
+        sizeUnit: [
+            {
+                type: 'inch',
+                title: 'Inch',
+                value: 24.5
+            },
+            {
+                type: 'cm',
+                title: 'cm',
+                value: 10
+            },
+            {
+                type: 'mm',
+                title: 'mm',
+                value: 1
+            }
         ]
     }
 }]);
@@ -51,18 +68,42 @@ dpicalApp.controller("mainController", ["$scope", "dpiServices", function($scope
     $scope.defaultDPI = 96;
     //Some common sizes
     $scope.commonSizes = dpiServices.commonSizes;
+    $scope.sizeUnit = dpiServices.sizeUnit;
     $scope.selectedSize = $scope.commonSizes[0];
+    $scope.selectedSizeUnit = $scope.sizeUnit[0];
     $scope.resultSizeX = function() {
         //mm = (pixels * 25.4) / dpi
         //pixels = (mm * dpi) / 25.4
-        var xPixel = parseFloat($scope.selectedSize.x * $scope.defaultDPI) / 25.4;
+        var xPixel;
+        switch($scope.selectedSizeUnit.type) {
+            case 'inch':
+                xPixel = parseFloat($scope.selectedSize.x * $scope.defaultDPI);
+                break;
+            case 'cm':
+                xPixel = parseFloat($scope.selectedSize.x * $scope.defaultDPI / 25.4) * 10;
+                break;
+            case 'mm':
+                xPixel = parseFloat($scope.selectedSize.x * $scope.defaultDPI / 25.4);
+                break;
+        }
         if(xPixel) {
             return Math.round(xPixel);
         }
         return '';
     }
     $scope.resultSizeY = function() {
-        var yPixel = parseFloat($scope.selectedSize.y * $scope.defaultDPI) / 25.4;
+        var yPixel;
+        switch($scope.selectedSizeUnit.type) {
+            case 'inch':
+                yPixel = parseFloat($scope.selectedSize.y * $scope.defaultDPI);
+                break;
+            case 'cm':
+                yPixel = parseFloat($scope.selectedSize.y * $scope.defaultDPI / 25.4) * 10;
+                break;
+            case 'mm':
+                yPixel = parseFloat($scope.selectedSize.y * $scope.defaultDPI / 25.4);
+                break;
+        }
         if(yPixel) {
             return Math.round(yPixel);
         }
@@ -78,16 +119,30 @@ dpicalApp.controller("outputSizeController", ["$scope", "dpiServices", function(
     $scope.outputWidth = function() {
         //mm = (pixels * 25.4) / dpi
         //pixels = (mm * dpi) / 25.4
-        var size = parseFloat($scope.imageWidth * 25.4) / parseFloat($scope.defaultDPI);
-        if(size) {
-            return size.toFixed(1);
+        var sizeInCM = parseFloat($scope.imageWidth * 2.54 / $scope.defaultDPI),
+            sizeInMM = sizeInCM * 10,
+            sizeInInch = $scope.imageWidth / $scope.defaultDPI;
+        if(sizeInCM) {
+            return {
+                mm: sizeInMM.toFixed(2),
+                cm: sizeInCM.toFixed(2),
+                inch: sizeInInch.toFixed(2)
+            }
+            //return size.toFixed(1);
         }
         return '';
     }
     $scope.outputHeight = function() {
-        var size = parseFloat($scope.imageHeight * 25.4) / parseFloat($scope.defaultDPI);
-        if(size) {
-            return size.toFixed(1);
+         var sizeInCM = parseFloat($scope.imageHeight * 2.54 / $scope.defaultDPI),
+            sizeInMM = sizeInCM * 10,
+            sizeInInch = $scope.imageHeight / $scope.defaultDPI;
+        if(sizeInCM) {
+            return {
+                mm: sizeInMM.toFixed(2),
+                cm: sizeInCM.toFixed(2),
+                inch: sizeInInch.toFixed(2)
+            }
+            //return size.toFixed(1);
         }
         return '';
     }

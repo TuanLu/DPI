@@ -9,7 +9,7 @@
 		<div class="container-fluid"> 
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h3 class="panel-title" style="text-align: center;">Calculation of Print Resolution. Free convert MM to PIXEL with custom DPI</h3>
+                    <h3 class="panel-title" style="text-align: center;">Calculation of Print Resolution.</h3>
                 </div>
                 <div class="panel-body">
                     <div class="row">
@@ -21,11 +21,18 @@
                                 <div class="panel-body">
                                     <table class="table">
                                         <tr>
-                                            <td>Requested output size: (in <b>mm</b>)</td>
+                                            <td>Size Unit</td>
+                                            <td>
+                                                <select ng-model="selectedSizeUnit" ng-options="size.title for size in sizeUnit"></select>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Requested output size: (in <b>{{selectedSizeUnit.title}}</b>)</td>
                                             <td>
                                                 <input size="5" ng-disabled="selectedSize.type != 'manual'" name="request_x" ng-model="selectedSize.x" type="text"/> x <input size="5" ng-disabled="selectedSize.type != 'manual'" name="request_y" ng-model="selectedSize.y" type="text"/>
+                                                <!--
                                                 Resp
-                                                <select ng-model="selectedSize" ng-options="size.title for size in commonSizes"></select>
+                                                <select ng-model="selectedSize" ng-options="size.title for size in commonSizes"></select>-->
                                             </td>
                                         </tr>
                                         <tr>
@@ -61,7 +68,7 @@
                                 <div class="panel-body">
                                     <table class="table">
                                         <tr>
-                                            <td>Resolution of existing image file: (in <b>pixel</b>)</td>
+                                            <td>Pixel dimensions of image</td>
                                             <td>
                                                 <input size="5" name="image_w" ng-model="imageWidth" type="text"/> x <input size="5" name="image_h" ng-model="imageHeight" type="text"/>
                                             </td>
@@ -73,9 +80,17 @@
                                             </td>
                                         </tr>
                                          <tr>
-                                            <td>Output size (in <b>mm</b>) when printed with the chosen dpi settings</td>
+                                            <td>Output size when printed with the chosen dpi settings</td>
                                             <td>
-                                                <input size="5" name="output_w" value="{{outputWidth()}}" type="text" disabled/> x <input size="5" name="output_y" value="{{outputHeight()}}" type="text" disabled/> (in <b>mm</b>)
+                                                <p>
+                                                    <input size="5" name="output_w" value="{{outputWidth().inch}}" type="text" disabled/> x <input size="5" name="output_y" value="{{outputHeight().inch}}" type="text" disabled/> <b>inch</b>
+                                                </p>
+                                                <p>
+                                                    <input size="5" name="output_w" value="{{outputWidth().cm}}" type="text" disabled/> x <input size="5" name="output_y" value="{{outputHeight().cm}}" type="text" disabled/> <b>cm</b>
+                                                </p>
+                                                <p>
+                                                    <input size="5" name="output_w" value="{{outputWidth().mm}}" type="text" disabled/> x <input size="5" name="output_y" value="{{outputHeight().mm}}" type="text" disabled/> <b>mm</b>
+                                                </p>
                                             </td>
                                         </tr>
                                     </table>
